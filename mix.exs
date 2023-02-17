@@ -10,7 +10,7 @@ defmodule BMP.MixProject do
       deps: deps(),
       description: "Elixir library allowing to interact with bitmap images.",
       package: hex()
-    ]
+    ] ++ docs()
   end
 
   def docs do
