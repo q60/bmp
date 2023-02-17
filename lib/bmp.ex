@@ -124,7 +124,9 @@ defmodule BMP do
   end
 
   def new({w, h}, depth, _fill = <<r::8, g::8, b::8>>) do
-    size = w * h * div(depth, 8) + 54
+    row_size = ceil(depth * w / 32) * 4
+    size = row_size * h + 54
+    padding = row_size - w * div(depth, 8)
 
     %BMP{
       bmp_header: %BMPHeader{
@@ -136,7 +138,11 @@ defmodule BMP do
         color_depth: num_to_bytes(depth, 2),
         compressed_size: num_to_bytes(size - 54, 4)
       },
-      raster_data: :binary.copy(<<b, g, r>>, w * h)
+      raster_data:
+        Enum.map(1..h, fn _ ->
+          :binary.copy(<<b, g, r>>, w) <> :binary.copy(<<0>>, padding)
+        end)
+        |> :binary.list_to_bin()
     }
   end
 
@@ -308,21 +314,21 @@ defmodule BMP do
     func.(
       path,
       Enum.join([
-        bmp.header.signature,
-        bmp.header.file_size,
-        bmp.header.reserved,
-        bmp.header.data_offset,
-        bmp.info_header.info_header_size,
-        bmp.info_header.width,
-        bmp.info_header.height,
-        bmp.info_header.planes,
-        bmp.info_header.color_depth,
-        bmp.info_header.compression,
-        bmp.info_header.compressed_size,
-        bmp.info_header.x_pixels_per_m,
-        bmp.info_header.y_pixels_per_m,
-        bmp.info_header.used_colors,
-        bmp.info_header.important_colors,
+        bmp.bmp_header.signature,
+        bmp.bmp_header.file_size,
+        bmp.bmp_header.reserved,
+        bmp.bmp_header.data_offset,
+        bmp.dib_header.dib_header_size,
+        bmp.dib_header.width,
+        bmp.dib_header.height,
+        bmp.dib_header.planes,
+        bmp.dib_header.color_depth,
+        bmp.dib_header.compression,
+        bmp.dib_header.compressed_size,
+        bmp.dib_header.x_pixels_per_m,
+        bmp.dib_header.y_pixels_per_m,
+        bmp.dib_header.used_colors,
+        bmp.dib_header.important_colors,
         bmp.color_table,
         bmp.raster_data
       ])

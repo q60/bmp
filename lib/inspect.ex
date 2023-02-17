@@ -6,9 +6,9 @@ defimpl Inspect, for: BMP do
       size == 0 ->
         "0 B"
 
-      size > 24 ->
+      size > 12 ->
         result =
-          for(<<chunk::binary-2 <- String.slice(Base.encode16(binary), 0..23)>>, do: chunk)
+          for(<<chunk::binary-2 <- String.slice(Base.encode16(binary), 0..24)>>, do: chunk)
           |> Enum.map(&"\e[38;5;#{String.to_integer(&1, 16)}m\e[1m#{&1}\e[0m")
           |> Enum.join(" ")
 
@@ -90,7 +90,7 @@ defimpl Inspect, for: BMP do
       #{format("data offset", bmp.bmp_header.data_offset, "byte")}
 
     \e[91m\e[1mDIB header:\e[0m
-      #{format("header size", bmp.dib_header.info_header_size, "byte")}
+      #{format("header size", bmp.dib_header.dib_header_size, "byte")}
       #{format("image size", bmp.dib_header.width, bmp.dib_header.height, "size")}
       #{format("planes", bmp.dib_header.planes, "number")}
       #{format("color depth", bmp.dib_header.color_depth, "bit")}
