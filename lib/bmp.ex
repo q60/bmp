@@ -123,24 +123,24 @@ defmodule BMP do
     new(size, depth, pixel_color)
   end
 
-  def new({w, h}, depth, _fill = <<r::8, g::8, b::8>>) do
-    row_size = ceil(depth * w / 32) * 4
-    size = row_size * h + 54
-    padding = row_size - w * div(depth, 8)
+  def new({width, height}, depth, _fill = <<r::8, g::8, b::8>>) do
+    row_size = ceil(depth * width / 32) * 4
+    size = row_size * height + 54
+    padding = row_size - width * div(depth, 8)
 
     %BMP{
       bmp_header: %BMPHeader{
         file_size: num_to_bytes(size, 4)
       },
       dib_header: %DIBHeader{
-        width: num_to_bytes(w, 4),
-        height: num_to_bytes(h, 4),
+        width: num_to_bytes(width, 4),
+        height: num_to_bytes(height, 4),
         color_depth: num_to_bytes(depth, 2),
         compressed_size: num_to_bytes(size - 54, 4)
       },
       raster_data:
-        Enum.map(1..h, fn _ ->
-          :binary.copy(<<b, g, r>>, w) <> :binary.copy(<<0>>, padding)
+        Enum.map(1..height, fn _ ->
+          :binary.copy(<<b, g, r>>, width) <> <<0::size(8 * padding)>>
         end)
         |> :binary.list_to_bin()
     }
