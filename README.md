@@ -14,4 +14,4 @@ def deps do
 end
 ```
 
-The docs can be found at [https://hexdocs.pm/bmp](https://hexdocs.pm/bmp).
+The docs can be found at [https://hexdocs.pm/bmp/BMP.html](https://hexdocs.pm/bmp/BMP.html).
