@@ -7,8 +7,10 @@ defmodule BMP.MixProject do
       version: "0.1.0",
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
-    ] ++ docs()
+      deps: deps(),
+      description: "Elixir library allowing to interact with bitmap images.",
+      package: hex()
+    ]
   end
 
   def docs do
@@ -19,6 +21,16 @@ defmodule BMP.MixProject do
         main: "BMP",
         extras: ["README.md", "LICENSE"]
       ]
+    ]
+  end
+
+  def hex do
+    [
+      name: "bmp",
+      licenses: ["MIT"],
+      links: %{
+        "GitHub" => "https://github.com/q60/bmp"
+      }
     ]
   end
 
