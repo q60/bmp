@@ -1,5 +1,5 @@
 defmodule BMP do
-  alias BMP.{Header, InfoHeader}
+  alias BMP.{BMPHeader, DIBHeader}
 
   @moduledoc """
   Elixir library implementing `BMP` struct allowing to interact with bitmap images.
@@ -9,13 +9,13 @@ defmodule BMP do
   ## Examples
 
       iex(1)> img = BMP.new({1920, 1080}, 24, "#F5ABB9")
-      file header:
+      BMP header:
         signature:          BM              | 42 4D                   | 2
         file size:          5.93 MiB        | 36 EC 5E 00             | 4
         reserved                            | 00 00 00 00             | 4
         data offset:        54 B            | 36 00 00 00             | 4
 
-      info header:
+      DIB header:
         header size:        40 B            | 28 00 00 00             | 4
         image size:         1920x1080       | 80 07 00 00 38 04 00 00 | 8
         planes:             1               | 01 00                   | 2
@@ -38,8 +38,8 @@ defmodule BMP do
       true
   """
 
-  defstruct header: %Header{},
-            info_header: %InfoHeader{},
+  defstruct bmp_header: %BMPHeader{},
+            dib_header: %DIBHeader{},
             color_table: <<>>,
             raster_data: <<>>,
             name: nil
@@ -88,13 +88,13 @@ defmodule BMP do
   ## Examples
 
       iex(1)> BMP.new {1600, 900}, 24, "#F5ABB9"
-      file header:
+      BMP header:
         signature:          BM              | 42 4D                   | 2
         file size:          4.12 MiB        | 36 EB 41 00             | 4
         reserved                            | 00 00 00 00             | 4
         data offset:        54 B            | 36 00 00 00             | 4
 
-      info header:
+      DIB header:
         header size:        40 B            | 28 00 00 00             | 4
         image size:         1600x900        | 40 06 00 00 84 03 00 00 | 8
         planes:             1               | 01 00                   | 2
@@ -127,10 +127,10 @@ defmodule BMP do
     size = w * h * div(depth, 8) + 54
 
     %BMP{
-      header: %Header{
+      bmp_header: %BMPHeader{
         file_size: num_to_bytes(size, 4)
       },
-      info_header: %InfoHeader{
+      dib_header: %DIBHeader{
         width: num_to_bytes(w, 4),
         height: num_to_bytes(h, 4),
         color_depth: num_to_bytes(depth, 2),
@@ -150,13 +150,13 @@ defmodule BMP do
       iex(1)> BMP.read_file("mew.bmp")
       mew.bmp
       -------
-      file header:
+      BMP header:
         signature:          BM              | 42 4D                   | 2
         file size:          3.05 KiB        | 36 0C 00 00             | 4
         reserved                            | 00 00 00 00             | 4
         data offset:        54 B            | 36 00 00 00             | 4
 
-      info header:
+      DIB header:
         header size:        40 B            | 28 00 00 00             | 4
         image size:         32x32           | 20 00 00 00 20 00 00 00 | 8
         planes:             1               | 01 00                   | 2
@@ -199,13 +199,13 @@ defmodule BMP do
       {:ok,
        mew.bmp
       -------
-      file header:
+      BMP header:
         signature:          BM              | 42 4D                   | 2
         file size:          3.05 KiB        | 36 0C 00 00             | 4
         reserved                            | 00 00 00 00             | 4
         data offset:        54 B            | 36 00 00 00             | 4
 
-      info header:
+      DIB header:
         header size:        40 B            | 28 00 00 00             | 4
         image size:         32x32           | 20 00 00 00 20 00 00 00 | 8
         planes:             1               | 01 00                   | 2
@@ -255,10 +255,10 @@ defmodule BMP do
 
         {:ok,
          %BMP{
-           header: %Header{
+           bmp_header: %BMPHeader{
              file_size: :binary.part(header, 2, 4)
            },
-           info_header: %InfoHeader{
+           dib_header: %DIBHeader{
              width: :binary.part(info_header, 4, 4),
              height: :binary.part(info_header, 8, 4),
              color_depth: :binary.part(info_header, 14, 2),

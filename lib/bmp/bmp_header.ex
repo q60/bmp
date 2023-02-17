@@ -1,4 +1,4 @@
-defmodule BMP.Header do
+defmodule BMP.BMPHeader do
   defstruct signature: <<?B, ?M>>,
             file_size: <<0xFF, 0x00, 0x00, 0x00>>,
             reserved: <<0x00, 0x00, 0x00, 0x00>>,

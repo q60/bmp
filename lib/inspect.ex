@@ -83,23 +83,23 @@ defimpl Inspect, for: BMP do
 
   def inspect(bmp, _opts) do
     show = """
-    \e[91m\e[1mfile header:\e[0m
-      #{format("signature", bmp.header.signature, display_value: true)}
-      #{format("file size", bmp.header.file_size, "byte")}
-      #{format("reserved", bmp.header.reserved, display_value: false)}
-      #{format("data offset", bmp.header.data_offset, "byte")}
+    \e[91m\e[1mBMP header:\e[0m
+      #{format("signature", bmp.bmp_header.signature, display_value: true)}
+      #{format("file size", bmp.bmp_header.file_size, "byte")}
+      #{format("reserved", bmp.bmp_header.reserved, display_value: false)}
+      #{format("data offset", bmp.bmp_header.data_offset, "byte")}
 
-    \e[91m\e[1minfo header:\e[0m
-      #{format("header size", bmp.info_header.info_header_size, "byte")}
-      #{format("image size", bmp.info_header.width, bmp.info_header.height, "size")}
-      #{format("planes", bmp.info_header.planes, "number")}
-      #{format("color depth", bmp.info_header.color_depth, "bit")}
-      #{format("compression", bmp.info_header.compression, "type")}
-      #{format("compressed size", bmp.info_header.compressed_size, "byte")}
-      #{format("x resolution", bmp.info_header.x_pixels_per_m, "px/m")}
-      #{format("y resolution", bmp.info_header.y_pixels_per_m, "px/m")}
-      #{format("used colors", bmp.info_header.used_colors, "number")}
-      #{format("important colors", bmp.info_header.important_colors, "number")}
+    \e[91m\e[1mDIB header:\e[0m
+      #{format("header size", bmp.dib_header.info_header_size, "byte")}
+      #{format("image size", bmp.dib_header.width, bmp.dib_header.height, "size")}
+      #{format("planes", bmp.dib_header.planes, "number")}
+      #{format("color depth", bmp.dib_header.color_depth, "bit")}
+      #{format("compression", bmp.dib_header.compression, "type")}
+      #{format("compressed size", bmp.dib_header.compressed_size, "byte")}
+      #{format("x resolution", bmp.dib_header.x_pixels_per_m, "px/m")}
+      #{format("y resolution", bmp.dib_header.y_pixels_per_m, "px/m")}
+      #{format("used colors", bmp.dib_header.used_colors, "number")}
+      #{format("important colors", bmp.dib_header.important_colors, "number")}
 
     #{:io_lib.format("\e[91m\e[1m~-22.. s\e[0m\e[92m~s\e[0m", ["color table:", bytes(bmp.color_table)])}
 
