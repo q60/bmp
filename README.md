@@ -4,8 +4,7 @@ Elixir library implementing `BMP` struct allowing to interact with bitmap images
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `bmp` to your list of dependencies in `mix.exs`:
+BMP is [available in Hex](https://hex.pm/packages/bmp) and can be installed by adding `bmp` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
@@ -15,6 +14,4 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/bmp>.
+The docs can be found at [https://hexdocs.pm/bmp](https://hexdocs.pm/bmp).
