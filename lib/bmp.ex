@@ -48,9 +48,15 @@ defmodule BMP do
   Bitmap image type.
   """
   @type bmp :: %BMP{}
+  @typedoc """
+  Color depth in bits.
+  """
   @type color_depth :: 1 | 4 | 8 | 16 | 24
+  @typedoc false
   @type bi_rgb :: 0
+  @typedoc false
   @type bi_rle8 :: 1
+  @typedoc false
   @type bi_rle4 :: 2
   @typedoc """
   BMP compression type.
@@ -165,7 +171,7 @@ defmodule BMP do
       color table:          0 B
 
       raster data:          FF FF FF FF FF FF FF FF FF FF FF FF ...   | 3072
-      }
+
       iex(2)> BMP.read_file("xeon.jpg")
       ** (Exceptions.FileReadError) error reading file "xeon.jpg": not a BMP file
           (bmp 0.1.0) lib/bmp.ex:101: BMP.read_file!/1
