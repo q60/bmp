@@ -1,0 +1,6 @@
+defmodule BMP.Header do
+  defstruct signature: <<?B, ?M>>,
+            file_size: <<0xFF, 0x00, 0x00, 0x00>>,
+            reserved: <<0x00, 0x00, 0x00, 0x00>>,
+            data_offset: <<54, 0x00, 0x00, 0x00>>
+end
