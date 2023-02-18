@@ -63,7 +63,7 @@ defmodule BMP do
 
   * BI_RGB - no compression
   * BI_RLE8 - 8 bit RLE encoding
-  * BI_RLE4 - 8 bit RLE encoding
+  * BI_RLE4 - 4 bit RLE encoding
   """
   @type compression :: bi_rgb() | bi_rle8() | bi_rle4()
 
