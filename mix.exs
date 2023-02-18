@@ -19,6 +19,7 @@ defmodule BMP.MixProject do
       source_url: "https://github.com/q60/bmp",
       docs: [
         main: "BMP",
+        logo: "assets/logo.png",
         extras: ["README.md", "LICENSE"]
       ]
     ]
