@@ -232,10 +232,19 @@ defmodule BMP do
   """
   @spec read_file(Path.t()) :: {:ok, bmp()} | {:error, atom()}
   def read_file(path) do
-    with file <- File.read!(path),
-         header <- :binary.part(file, 0, 14),
+    with {:ok, data} <- File.read(path),
+         {:ok, bmp} <- parse(data) do
+      {:ok, %{bmp | name: Path.basename(path)}}
+    else
+      error -> error
+    end
+  end
+
+  @spec parse(binary()) :: {:ok, bmp()} | {:error, atom()}
+  def parse(data) do
+    with header <- :binary.part(data, 0, 14),
          signature <- :binary.part(header, 0, 2),
-         info_header <- :binary.part(file, 14, 40) do
+         info_header <- :binary.part(data, 14, 40) do
       if signature == "BM" do
         depth =
           :binary.part(info_header, 12, 2)
@@ -249,7 +258,7 @@ defmodule BMP do
                 |> :binary.decode_unsigned()
 
               {
-                :binary.part(file, 54, 4 * colors_number),
+                :binary.part(data, 54, 4 * colors_number),
                 4 * colors_number
               }
 
@@ -278,11 +287,11 @@ defmodule BMP do
            color_table: color_table?,
            raster_data:
              :binary.part(
-               file,
+               data,
                54 + color_table_size?,
                :binary.decode_unsigned(compressed_size, :little)
              ),
-           name: Path.basename(path)
+           name: nil
          }}
       else
         {:error, :not_a_bmp}
